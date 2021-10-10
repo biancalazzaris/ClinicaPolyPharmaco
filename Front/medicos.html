@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinica Poly Pharmaco</title>
+</head>
+
+<body>
+    <header>
+        <h1>Clinica Poly Pharmaco</h1>
+    </header>
+    <div class="bodyform">
+        <section>
+            <h1>Médicos:</h1>
+            <h3>Todos os médicos da clínica, aqui pra você!</h3>
+            <ul id="medicos"></ul>
+        </section>
+        <section>
+            <div>
+                <h3>Adicionar novo médico:</h3>
+                <form action="post">
+                    <input type="text" name="name" id="name" placeholder="Escreva o nome do médico aqui">
+                    <input type="text" name="specialty" id="specialty" placeholder="Qual a especialidade?">
+
+                    <button class="add" type="button" onclick="addDoc()">
+                        Adicionar
+                    </button>
+                </form>
+            </div>
+        </section>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js">
+    </script>
+    <script>
+        onLoad();
+
+        async function onLoad() {
+            const url = 'http://localhost:5000/api/medicos';
+            try {
+                const response = await axios.get(url);
+                getAllDoctors(response);
+            }
+            catch (error) {
+                console.error(error);
+            };
+        };
+
+        function buildDeleteDoc(item) {
+            const deleteButton = document.createElement('button');
+            deleteButton.innerHTML = 'Remover';
+            item.appendChild(deleteButton);
+
+            deleteButton.addEventListener('click', () => {
+                deleteDoc(item);
+            });
+        }
+
+        function deleteDoc(item) {
+            console.log(item);
+            const docId = item.getAttribute('data-id');
+            const url = `http://localhost:5000/api/medico/${docId}`;
+
+            axios.delete(url)
+                .then(response => {
+                    console.log(response);
+                    alert('Cadastro deletado')
+                    location.reload();
+                }).catch(error => {
+                    console.error(error);
+                });
+        }
+
+        function addDoc() {
+            const nameField = document.querySelector('#name').value;
+            const specialtyField = document.querySelector('#specialty').value;
+
+            const url = 'http://localhost:5000/api/medico';
+            const data = {
+                name: nameField,
+                especialidade: specialtyField,
+            };
+            axios
+                .post(url, data)
+                .then((response) => {
+                    alert('Cadastro adicionado!')
+                    location.reload();
+
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+
+        function getAllDoctors(response) {
+            const medicos = response.data;
+            const list = document.getElementById('medicos');
+
+            medicos.forEach(medico => {
+                const item = document.createElement('li');
+
+                item.setAttribute('data-id', medico.id);
+
+                item.innerHTML =
+                    `${medico.id} - ${medico.name} - ${medico.especialidade}  `;
+                list.appendChild(item);
+
+                buildDeleteDoc(item);
+            });
+        };
+
+
+    </script>
+    <style>
+        body,
+        h1 {
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        body {
+            background-color: #b6ebb8;
+        }
+
+        header {
+            height: 5em;
+            width: 100%;
+            background-color: #111812;
+            color: #fff;
+            text-align: center;
+            font-style: italic;
+        }
+
+        #medicos {
+            list-style-type: none;
+            text-decoration-color: aqua;
+        }
+
+        h3,
+        h1 {
+            font-weight: 500;
+            padding-top: 20px;
+        }
+
+        .add {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #f44336;
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            border-radius: 4px;
+            margin: 3px;
+        }
+        input {
+            width: 330px;
+            height: 20px;
+            margin: 5px 0;
+        }
+        input:focus {
+            border: 3px solid #555;
+        }
+    </style>
+</body>
+
+</html>

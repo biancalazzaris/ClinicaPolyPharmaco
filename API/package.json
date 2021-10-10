@@ -1,0 +1,25 @@
+{
+  "name": "clinicapolypharmaco",
+  "version": "1.0.0",
+  "description": "Praticing Node.JS, API w/ CRUD",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/biancalazzaris/ClinicaPolyPharmaco.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/biancalazzaris/ClinicaPolyPharmaco/issues"
+  },
+  "homepage": "https://github.com/biancalazzaris/ClinicaPolyPharmaco#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  }
+}
