@@ -23,7 +23,7 @@ const DB = {
 }
 
 app.get('/', (req, res) => {
-    res.json({ message: 'Rota vazia' })
+    res.render('/Front/index.html')
 });
 
 //Endopoint de médicos:
@@ -82,6 +82,60 @@ app.delete('/api/medico/:id', (req, res) => {
 
 
 // Pacientes 
+// retorna todos os pacientes
+app.get('/api/pacientes', (req, res) => {
+    res.statusCode = 200;
+    res.json(DB.paciente)
+});
+
+// retorna um médico com ID
+app.get('/api/pacientes/:id', (req, res) => {
+    const id = req.params.id;
+    if (isNaN(id)) {
+        res.send('Opsss, id informado não é number');
+    } else {
+        const idpaciente = parseInt(req.params.id);
+        const paciente = DB.paciente.find(index => index.id === idpaciente);
+        if (paciente !== undefined) {
+            res.statusCode = 200;
+            res.json(paciente);
+        } else {
+            res.sendStatus(404);
+        }
+    }
+});
+
+//salva um registro de um médico
+app.post('/api/paciente', (req, res) => {
+    const { name, exames, receita } = req.body;
+    DB.paciente.push({
+        id: Math.floor(Math.random()* (100 - 10)) + 3,
+        name,
+        exames, 
+        receita
+    });
+    res.send('Novo cadastro de paciente salvo com sucesso.');
+});
+
+// remove um registro de um médico
+app.delete('/api/paciente/:id', (req, res) => {
+    const id = req.params.id;
+    if (isNaN(id)) {
+        res.sendStatus(400)
+        res.json('Ops, não foi informado um número válido');
+    } else {
+        const paciente = DB.paciente.findIndex(index => index.id === parseInt(id));
+        if (paciente === -1) {
+            res.sendStatus(404);
+        } else {
+            DB.paciente.splice(paciente, 1);
+            res.sendStatus(200);
+            res.json({ message: 'Cadastro de paciente deletado!' })
+        }
+    }
+});
+
+//Farmácia
 // retorna todos os pacientes
 app.get('/api/pacientes', (req, res) => {
     res.statusCode = 200;

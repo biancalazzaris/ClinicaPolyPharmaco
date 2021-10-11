@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmácia Pharmaco</title>
+</head>
+
+<body>
+    <header>
+        <h1>Farmácia Pharmaco</h1>
+    </header>
+    <div>
+        <section>
+            <h1>Pacientes:</h1>
+            <h3>Todos os pacientes da clínica, aqui pra você!</h3>
+            <ul id="pacientes"></ul>
+        </section>
+        <section>
+            <div>
+                <h3>Adicionar novo paciente:</h3>
+                <form action="post">
+                    <input type="text" name="name" id="name" placeholder="Nome do paciente">
+                    <input type="text" name="exames" id="exames" placeholder="Quais exames?">
+                    <input type="text" name="receita" id="receita" placeholder="Descreva a receita">
+
+                    <button class="add" type="button" onclick="addPaciente()">
+                        Adicionar
+                    </button>
+                </form>
+            </div>
+        </section>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js">
+    </script>
+    <script>
+        onLoad();
+
+        async function onLoad() {
+            const url = 'http://localhost:5000/api/pacientes';
+            try {
+                const response = await axios.get(url);
+                getAllPacientes(response);
+            }
+            catch (error) {
+                console.error(error);
+            };
+        };
+
+        function buildDeletePaciente(item) {
+            const deleteButton = document.createElement('button');
+            deleteButton.innerHTML = 'Remover';
+            item.appendChild(deleteButton);
+
+            deleteButton.addEventListener('click', () => {
+                deletePaciente(item);
+            });
+        }
+
+        function deletePaciente(item) {
+            console.log(item);
+            const pacienteId = item.getAttribute('data-id');
+            const url = `http://localhost:5000/api/paciente/${pacienteId}`;
+
+            axios.delete(url)
+                .then(response => {
+                    console.log(response);
+                    alert('Cadastro deletado')
+                    location.reload();
+                }).catch(error => {
+                    console.error(error);
+                });
+        }
+
+        function addPaciente() {
+            const nameField = document.querySelector('#name').value;
+            const examesField = document.querySelector('#exames').value;
+            const receitaField = document.querySelector('#receita').value;
+
+            const url = 'http://localhost:5000/api/paciente';
+            const data = {
+                name: nameField,
+                exames: examesField,
+                receita: receitaField
+            };
+            axios
+                .post(url, data)
+                .then((response) => {
+                    alert('Cadastro adicionado!')
+                    location.reload();
+
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+
+        function getAllPacientes(response) {
+            const pacientes= response.data;
+            const list = document.getElementById('pacientes');
+
+            pacientes.forEach(paciente => {
+                const item = document.createElement('li');
+
+                item.setAttribute('data-id', paciente.id);
+
+                item.innerHTML =
+                    `ID: ${paciente.id}, NOME: ${paciente.name} EXAMES: ${paciente.exames}, RECEITA: ${paciente.receita} `;
+                list.appendChild(item);
+
+                buildDeletePaciente(item);
+            });
+        };
+
+
+    </script>
+    <style>
+        body,
+        h1 {
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        body {
+            background-color: #a4a4ca;
+        }
+
+        header {
+            height: 5em;
+            width: 100%;
+            background-color: #736f9c69;
+            color: #fff;
+            text-align: center;
+            font-style: italic;
+        }
+
+        #pacientes {
+            list-style-type: none;
+        }
+
+        h3,
+        h1 {
+            font-weight: 500;
+            padding-top: 20px;
+        }
+
+        .add {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #f44336;
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            border-radius: 4px;
+            margin: 3px;
+        }
+        input {
+            width: 330px;
+            height: 20px;
+            margin: 5px 0;
+        }
+        input:focus {
+            border: 3px solid #555;
+        }
+    </style>
+</body>
+
+</html>
