@@ -15,7 +15,9 @@ const DB = {
         { id: 6, name: 'Rodrigo Marzagão', especialidade: 'Oftalmologista' }
     ],
     paciente: [
-        { id: 20, name: 'Zé Silveira', exames: {}, receita: {} }
+        { id: 20, name: 'Zé Silveira', exames: {}, receita: {} }, 
+        { id: 30, name: 'Xioti Cautuo', exames: {}, receita: {} }, 
+        { id: 40, name: 'Duruva Silva', exames: {}, receita: {} }, 
     ],
     medicamento: [
         { id: 33, name: 'BuscoPan', generico: 'Ibuprofeno', dosagem: '500mg', posologia: '3x ao dia, de 8h em 8h', indicacaoMedicamentosa: '3 comp dia'},
