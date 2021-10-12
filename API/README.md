@@ -22,20 +22,17 @@ delete: /api/paciente/id-paciente			-- remove um registro de um paciente
 
 3. Endpoint para Medicamentos:
 -------
-get:   	/api/medicamentos  				-- retorna todos os pacientes
-get: 	/api/medicamento/id-paciente 		-- retorna um paciente com ID
-post: 	/api/medicamento 				-- salva um registro de um paciente
-delete: /api/medicamento/id-medicamento	-- remove um registro de um paciente
+get:   	/api/medicamentos  		                  -- retorna todos os medicamentos
+get: 	/api/medicamento/id-medicamento    -- retorna um medicamento com ID
+post: 	/api/medicamento 			-- salva um medicamento de um paciente
+delete: /api/medicamento/id-medicamento   -- remove um registro de um medicamento
 -------
 
 4. Endpoint para Farmácia:
 -------
-get:   	/api/farmacia  				-- retorna todos os pacientes
-get: 	/api/farmacia/id-farmacia 			-- retorna um paciente com ID
-post: 	/api/farmacia 				-- salva um registro de um paciente
-delete: /api/farmacia/id-farmacia			-- remove um registro de um paciente
--------
-
-
+get:   	/api/farmacia  			-- retorna todos as farmacias
+get: 	/api/farmacia/id-farmacia 		-- retorna um farmacia por ID
+post: 	/api/farmacia 			-- salva um registro de uma  farmacia
+delete: /api/farmacia/id-farmacia		-- remove um registro de uma farmacia
 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
